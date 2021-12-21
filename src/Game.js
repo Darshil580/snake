@@ -19,6 +19,18 @@ function Square(props) {
   );
 }
 
+function ObstacleSquare(props) {
+  return (
+    <span
+      className="square"
+      style={{ top: props.y * 25 + "px", left: props.x * 25 + "px" }}
+      id={props.id}
+    >
+      {/* <font size="1">{props.id}</font> */}
+    </span>
+  );
+}
+
 function Score(props) {
   return <h2>Score: {props.score}</h2>;
 }
@@ -43,28 +55,22 @@ class Snake extends React.Component {
     this.state = {
       size: 3,
       food: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)],
-      speed: 100,
+      speed: 80,
       direction: "left",
       over: false,
+      level: 1,
       snakebody: [
         [8, 8],
         [9, 8],
         [10, 8],
       ],
     };
-    this.start = this.start.bind(this);
   }
 
   componentDidMount() {
+    let { speed } = this.state;
     document.addEventListener("keydown", (event) => this.handlePress(event));
-    this.start();
-  }
-
-  start() {
-    global.loop = setInterval(() => {
-      this.moveSnake();
-    }, this.state.speed);
-    window.setInterval = global.loop;
+    global.loop = setInterval(() => this.moveSnake(), speed);
   }
 
   changeDirection(direction) {
@@ -90,12 +96,27 @@ class Snake extends React.Component {
   over() {
     let snake = this.state.snakebody;
     let check = snake[0];
+    const { level } = this.state;
 
+    // Checking Body Touch
     for (let i = 1; i < snake.length; i++) {
       if (snake[i][0] === check[0] && snake[i][1] === check[1]) {
         return true;
       }
     }
+
+    //Checking Field Touch
+    if (level === 2) {
+      if (
+        check[0] === 0 ||
+        check[1] === 0 ||
+        check[0] === 39 ||
+        check[1] === 19
+      ) {
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -143,6 +164,9 @@ class Snake extends React.Component {
       this.setState({ snakebody: loc });
     } else {
       this.props.parentCallback();
+      document.removeEventListener("keydown", (event) =>
+        this.handlePress(event)
+      );
       clearInterval(global.loop);
     }
   }
@@ -184,6 +208,34 @@ class Snake extends React.Component {
     return <Square x={food[0]} y={food[1]} />;
   }
 
+  updateLevel() {
+    let { level } = this.state;
+    level = level + 1;
+    this.setState({ level: level });
+  }
+
+  obstacles() {
+    const { level } = this.state;
+    let blocks = [];
+
+    if (level === 2) {
+      for (let x = 0; x < 40; x++) {
+        for (let y = 0; y < 20; y++) {
+          if (x === 0) {
+            blocks.push(<ObstacleSquare x={0} y={y} />);
+          } else if (y === 0) {
+            blocks.push(<ObstacleSquare x={x} y={0} />);
+          } else if (x === 39) {
+            blocks.push(<ObstacleSquare x={39} y={y} />);
+          } else if (y === 19) {
+            blocks.push(<ObstacleSquare x={x} y={19} />);
+          }
+        }
+      }
+      return blocks;
+    }
+  }
+
   renderSnake() {
     let squares = [];
     let { size } = this.state;
@@ -200,6 +252,7 @@ class Snake extends React.Component {
     return (
       <div>
         {this.renderSnake()}
+        {this.obstacles()}
         {this.food()}
       </div>
     );
@@ -212,17 +265,28 @@ class GameField extends React.Component {
     this.state = {
       over: false,
       score: 0,
+      level: 1,
     };
+    this.levelUpdate = React.createRef();
   }
 
   reset = () => {
     this.setState({ over: false, score: 0 });
+    console.log("check");
   };
 
   updateScore = () => {
     let { score } = this.state;
+    let { level } = this.state;
+
     score = score + 1;
     this.setState({ score: score });
+
+    if (score > 14 && level !== 2) {
+      level = level + 1;
+      this.levelUpdate.current.updateLevel();
+      this.setState({ level: level });
+    }
   };
 
   scoreCallback = () => {
@@ -239,10 +303,11 @@ class GameField extends React.Component {
           <h1>Simple Snake Game. Use Arrow keys to control the Snake.</h1>
           <Score score={score} />
 
-          <div className="surface">
+          <div className="surface border-white">
             <Snake
               parentCallback={this.scoreCallback}
               updateScore={this.updateScore}
+              ref={this.levelUpdate}
             />
           </div>
         </div>
