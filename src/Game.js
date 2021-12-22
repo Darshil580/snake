@@ -29,14 +29,20 @@ function ObstacleSquare(props) {
 
 function Display(props) {
   return (
-    <h2>
+    <h2 className={props.class}>
       {props.name} : {props.value}
     </h2>
   );
 }
 
 function GameOver(props) {
-  return <h3>The Game is Over. Your Score is : {props.score}</h3>;
+  return (
+    <h3 className={props.class}>
+      The Game is Over. Your Score is : {props.score}
+      <br />
+      Your Highest Score is : {props.highscore}
+    </h3>
+  );
 }
 
 function Restart(props) {
@@ -76,15 +82,11 @@ class Snake extends React.Component {
     let { speed } = this.state;
     document.addEventListener("keydown", (event) => {
       setTimeout(() => {
-        console.log(event.key);
         this.handlePress(event);
       }, 75);
     });
 
-    global.loop = setInterval(
-      () => this.moveSnake(this.state.direction),
-      speed
-    );
+    global.loop = setInterval(() => this.moveSnake(), speed);
   }
 
   genFood() {
@@ -149,10 +151,10 @@ class Snake extends React.Component {
     return false;
   }
 
-  moveSnake(direction) {
+  moveSnake() {
     const touched = this.touched_food();
     let over = this.over();
-
+    let { direction } = this.state;
     let loc = this.state.snakebody;
     let { size } = this.state;
 
@@ -208,30 +210,34 @@ class Snake extends React.Component {
       direction !== "right"
     ) {
       this.setState({ direction: "left" });
+      // this.moveSnake();
     } else if (
       e.key === "ArrowRight" &&
       direction !== "right" &&
       direction !== "left"
     ) {
       this.setState({ direction: "right" });
+      // this.moveSnake();
     } else if (
       e.key === "ArrowUp" &&
       direction !== "up" &&
       direction !== "down"
     ) {
       this.setState({ direction: "up" });
+      // this.moveSnake();
     } else if (
       e.key === "ArrowDown" &&
       direction !== "down" &&
       direction !== "up"
     ) {
       this.setState({ direction: "down" });
+      // this.moveSnake();
     }
   }
 
   food() {
     let { food } = this.state;
-    return <Square x={food[0]} y={food[1]} />;
+    return <Square x={food[0]} y={food[1]} class="" />;
   }
 
   updateLevel() {
@@ -277,11 +283,11 @@ class Snake extends React.Component {
     }
 
     if (level === 3) {
-      for (let y = 3; y < 17; y++) {
-        badpool.push([20, y]);
+      for (let y = 4; y < 15; y++) {
+        badpool.push([19, y]);
       }
-      for (let x = 3; x < 37; x++) {
-        badpool.push([x, 10]);
+      for (let x = 4; x < 35; x++) {
+        badpool.push([x, 9]);
       }
       this.setState({
         level: level,
@@ -296,7 +302,7 @@ class Snake extends React.Component {
     const { level } = this.state;
     let blocks = [];
 
-    if (level > 1) {
+    if (level === 2) {
       for (let x = 0; x < 40; x++) {
         for (let y = 0; y < 20; y++) {
           if (x === 0) {
@@ -310,16 +316,17 @@ class Snake extends React.Component {
           }
         }
       }
+    }
 
-      if (level > 2) {
-        for (let y = 3; y < 17; y++) {
-          blocks.push(<ObstacleSquare x={20} y={y} />);
-        }
-        for (let x = 3; x < 37; x++) {
-          blocks.push(<ObstacleSquare x={x} y={10} />);
-        }
+    if (level > 2) {
+      for (let y = 4; y < 15; y++) {
+        blocks.push(<ObstacleSquare x={19} y={y} />);
+      }
+      for (let x = 4; x < 35; x++) {
+        blocks.push(<ObstacleSquare x={x} y={9} />);
       }
     }
+
     return blocks;
   }
 
@@ -327,9 +334,20 @@ class Snake extends React.Component {
     let squares = [];
     let { size } = this.state;
     let loc = this.state.snakebody;
+    let toggle = true;
 
     for (let i = 0; i < size; i++) {
-      squares.push(<Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} />);
+      if (toggle === true) {
+        squares.push(
+          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} class="" />
+        );
+        toggle = false;
+      } else {
+        squares.push(
+          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} class="" />
+        );
+        toggle = true;
+      }
     }
 
     return squares;
@@ -352,7 +370,7 @@ class GameField extends React.Component {
     this.state = {
       over: false,
       score: 0,
-      level: 2,
+      level: 1,
       highscore: 0,
     };
     this.levelUpdate = React.createRef();
@@ -376,12 +394,12 @@ class GameField extends React.Component {
 
     this.setState({ score: score, highscore: highscore });
 
-    if (score > 5 && level !== 2) {
+    if (score > 10 && level !== 2) {
       level = level + 1;
       this.levelUpdate.current.updateLevel();
       this.setState({ level: level });
     }
-    if (score > 10 && level !== 3) {
+    if (score > 15 && level !== 3) {
       level = level + 1;
       this.levelUpdate.current.updateLevel();
       this.setState({ level: level });
@@ -398,11 +416,15 @@ class GameField extends React.Component {
     if (!over) {
       return (
         <div>
-          <h1>Simple Snake Game. Use Arrow keys to control the Snake.</h1>
-          <div className="">
-            <Display name="Score" value={score} />
-            <Display name="Level" value={level} />
-            <Display name="Highscore" value={highscore} />
+          <h1 id="info">
+            Simple Snake Game. Use Arrow keys to control the Snake.
+          </h1>
+          <div id="details">
+            {/* <div className="row"> */}
+            <Display name="Score" value={score} class="data" />
+            <Display name="Level" value={level} class="data" />
+            <Display name="Highscore" value={highscore} class="data" />
+            {/* </div> */}
           </div>
 
           <div className="surface border-white">
@@ -417,8 +439,7 @@ class GameField extends React.Component {
     } else {
       return (
         <div>
-          <h1>Simple Snake Game. Use Arrow keys to control the Snake.</h1>
-          <GameOver score={score} />
+          <GameOver score={score} class="over" highscore={highscore} />
           <Restart reset={this.reset} />
         </div>
       );
