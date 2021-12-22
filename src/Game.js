@@ -13,9 +13,7 @@ function Square(props) {
       className="square border-black"
       style={{ top: props.y * 25 + "px", left: props.x * 25 + "px" }}
       id={props.id}
-    >
-      {/* <font size="1">{props.id}</font> */}
-    </span>
+    ></span>
   );
 }
 
@@ -25,14 +23,16 @@ function ObstacleSquare(props) {
       className="square"
       style={{ top: props.y * 25 + "px", left: props.x * 25 + "px" }}
       id={props.id}
-    >
-      {/* <font size="1">{props.id}</font> */}
-    </span>
+    ></span>
   );
 }
 
-function Score(props) {
-  return <h2>Score: {props.score}</h2>;
+function Display(props) {
+  return (
+    <h2>
+      {props.name} : {props.value}
+    </h2>
+  );
 }
 
 function GameOver(props) {
@@ -54,27 +54,54 @@ class Snake extends React.Component {
     super(props);
     this.state = {
       size: 3,
-      food: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)],
+      food: [Math.floor(Math.random() * 40), Math.floor(Math.random() * 20)],
       speed: 80,
       direction: "left",
       over: false,
       level: 1,
       snakebody: [
-        [8, 8],
-        [9, 8],
-        [10, 8],
+        [30, 8],
+        [31, 8],
+        [32, 8],
+      ],
+      badpool: [
+        [30, 8],
+        [31, 8],
+        [32, 8],
       ],
     };
   }
 
   componentDidMount() {
     let { speed } = this.state;
-    document.addEventListener("keydown", (event) => this.handlePress(event));
-    global.loop = setInterval(() => this.moveSnake(), speed);
+    document.addEventListener("keydown", (event) => {
+      setTimeout(() => {
+        console.log(event.key);
+        this.handlePress(event);
+      }, 75);
+    });
+
+    global.loop = setInterval(
+      () => this.moveSnake(this.state.direction),
+      speed
+    );
   }
 
-  changeDirection(direction) {
-    this.setState({ direction: direction });
+  genFood() {
+    const { badpool } = this.state;
+
+    let x = Math.floor(Math.random() * 40);
+    let y = Math.floor(Math.random() * 20);
+
+    for (let i = 0; i < badpool.length; i++) {
+      if (badpool[i][0] === x && badpool[i][1] === y) {
+        x = Math.floor(Math.random() * 40);
+        y = Math.floor(Math.random() * 20);
+        i = 0;
+      }
+    }
+
+    this.setState({ food: [x, y] });
   }
 
   touched_food() {
@@ -82,10 +109,7 @@ class Snake extends React.Component {
     const { food } = this.state;
 
     if (first[0] === food[0] && first[1] === food[1]) {
-      food[0] = Math.floor(Math.random() * 20);
-      food[1] = Math.floor(Math.random() * 20);
-
-      this.setState({ food: food });
+      this.genFood();
       this.props.updateScore();
       return true;
     } else {
@@ -106,13 +130,18 @@ class Snake extends React.Component {
     }
 
     //Checking Field Touch
-    if (level === 2) {
+    if (level > 1) {
       if (
         check[0] === 0 ||
         check[1] === 0 ||
         check[0] === 39 ||
         check[1] === 19
       ) {
+        if (level > 2) {
+          if (check[0] === 20 || check[1] === 10) {
+            return true;
+          }
+        }
         return true;
       }
     }
@@ -120,10 +149,9 @@ class Snake extends React.Component {
     return false;
   }
 
-  moveSnake() {
+  moveSnake(direction) {
     const touched = this.touched_food();
     let over = this.over();
-    const { direction } = this.state;
 
     let loc = this.state.snakebody;
     let { size } = this.state;
@@ -179,27 +207,25 @@ class Snake extends React.Component {
       direction !== "left" &&
       direction !== "right"
     ) {
-      this.changeDirection("left");
+      this.setState({ direction: "left" });
     } else if (
       e.key === "ArrowRight" &&
       direction !== "right" &&
       direction !== "left"
     ) {
-      this.changeDirection("right");
+      this.setState({ direction: "right" });
     } else if (
       e.key === "ArrowUp" &&
       direction !== "up" &&
       direction !== "down"
     ) {
-      this.changeDirection("up");
+      this.setState({ direction: "up" });
     } else if (
       e.key === "ArrowDown" &&
       direction !== "down" &&
       direction !== "up"
     ) {
-      this.changeDirection("down");
-    } else {
-      console.log("Not Valid");
+      this.setState({ direction: "down" });
     }
   }
 
@@ -210,15 +236,67 @@ class Snake extends React.Component {
 
   updateLevel() {
     let { level } = this.state;
+    let { badpool } = this.state;
+    let snakebody = [
+      [30, 8],
+      [31, 8],
+      [32, 8],
+    ];
+
     level = level + 1;
-    this.setState({ level: level });
+
+    if (level === 2) {
+      for (let x = 0; x < 40; x++) {
+        for (let y = 0; y < 20; y++) {
+          if (x === 0) {
+            badpool.push([x, y]);
+          } else if (y === 0) {
+            badpool.push([x, y]);
+          } else if (x === 39) {
+            badpool.push([x, y]);
+          } else if (y === 19) {
+            badpool.push([x, y]);
+          }
+        }
+      }
+
+      if (this.state.direction === "right") {
+        snakebody = [
+          [9, 8],
+          [8, 8],
+          [7, 8],
+        ];
+      }
+
+      this.setState({
+        level: level,
+        snakebody: snakebody,
+        size: 3,
+        badpool: badpool,
+      });
+    }
+
+    if (level === 3) {
+      for (let y = 3; y < 17; y++) {
+        badpool.push([20, y]);
+      }
+      for (let x = 3; x < 37; x++) {
+        badpool.push([x, 10]);
+      }
+      this.setState({
+        level: level,
+        snakebody: snakebody,
+        size: 3,
+        badpool: badpool,
+      });
+    }
   }
 
   obstacles() {
     const { level } = this.state;
     let blocks = [];
 
-    if (level === 2) {
+    if (level > 1) {
       for (let x = 0; x < 40; x++) {
         for (let y = 0; y < 20; y++) {
           if (x === 0) {
@@ -232,8 +310,17 @@ class Snake extends React.Component {
           }
         }
       }
-      return blocks;
+
+      if (level > 2) {
+        for (let y = 3; y < 17; y++) {
+          blocks.push(<ObstacleSquare x={20} y={y} />);
+        }
+        for (let x = 3; x < 37; x++) {
+          blocks.push(<ObstacleSquare x={x} y={10} />);
+        }
+      }
     }
+    return blocks;
   }
 
   renderSnake() {
@@ -265,24 +352,36 @@ class GameField extends React.Component {
     this.state = {
       over: false,
       score: 0,
-      level: 1,
+      level: 2,
+      highscore: 0,
     };
     this.levelUpdate = React.createRef();
   }
 
   reset = () => {
-    this.setState({ over: false, score: 0 });
+    this.setState({ over: false, score: 0, level: 1 });
     console.log("check");
   };
 
   updateScore = () => {
     let { score } = this.state;
     let { level } = this.state;
+    let { highscore } = this.state;
 
     score = score + 1;
-    this.setState({ score: score });
 
-    if (score > 14 && level !== 2) {
+    if (score > highscore) {
+      highscore = highscore + 1;
+    }
+
+    this.setState({ score: score, highscore: highscore });
+
+    if (score > 5 && level !== 2) {
+      level = level + 1;
+      this.levelUpdate.current.updateLevel();
+      this.setState({ level: level });
+    }
+    if (score > 10 && level !== 3) {
       level = level + 1;
       this.levelUpdate.current.updateLevel();
       this.setState({ level: level });
@@ -294,14 +393,17 @@ class GameField extends React.Component {
   };
 
   render() {
-    let { score } = this.state;
-    let { over } = this.state;
+    const { score, over, level, highscore } = this.state;
 
     if (!over) {
       return (
         <div>
           <h1>Simple Snake Game. Use Arrow keys to control the Snake.</h1>
-          <Score score={score} />
+          <div className="">
+            <Display name="Score" value={score} />
+            <Display name="Level" value={level} />
+            <Display name="Highscore" value={highscore} />
+          </div>
 
           <div className="surface border-white">
             <Snake
@@ -328,14 +430,6 @@ class Game extends React.Component {
   render() {
     return (
       <div className="App">
-        {/* <div className="App-header cell border-white">
-          <Logo location={logo} id={1} />
-          <Logo location={logored} id={2} />
-          <Logo location={logogreen} id={3} />
-          <Logo location={logored} id={4} />
-          <Logo location={logogreen} id={5} />
-          <Logo location={logo} id={6} />
-        </div> */}
         <div className="App-header ">
           <GameField />
         </div>
