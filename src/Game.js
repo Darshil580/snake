@@ -132,7 +132,7 @@ class Snake extends React.Component {
     }
 
     // Checking Field Touch for Level 2
-    if (level === 2) {
+    if (level === 2 || level === 4) {
       if (
         check[0] === 0 ||
         check[1] === 0 ||
@@ -144,13 +144,13 @@ class Snake extends React.Component {
     }
 
     // Checking Field Touch for Level 3
-    if (level === 3) {
-      for (let y = 2; y < 17; y++) {
+    if (level === 3 || level === 4) {
+      for (let y = 4; y < 15; y++) {
         if (check[0] === 19 && check[1] === y) {
           return true;
         }
       }
-      for (let x = 2; x < 37; x++) {
+      for (let x = 4; x < 35; x++) {
         if (check[0] === x && check[1] === 9) {
           return true;
         }
@@ -163,9 +163,8 @@ class Snake extends React.Component {
   moveSnake() {
     const touched = this.touched_food();
     let over = this.over();
-    let { direction } = this.state;
+    let { direction, size } = this.state;
     let loc = this.state.snakebody;
-    let { size } = this.state;
 
     if (!over) {
       if (touched) {
@@ -249,16 +248,13 @@ class Snake extends React.Component {
     return <Square x={food[0]} y={food[1]} class="" />;
   }
 
-  updateLevel() {
-    let { level } = this.state;
+  updateLevel(level) {
     let badpool = [];
     let snakebody = [
       [30, 8],
       [31, 8],
       [32, 8],
     ];
-
-    level = level + 1;
 
     if (this.state.direction === "right") {
       snakebody = [
@@ -268,7 +264,7 @@ class Snake extends React.Component {
       ];
     }
 
-    if (level === 2) {
+    if (level === 2 || level === 4) {
       for (let x = 0; x < 40; x++) {
         for (let y = 0; y < 20; y++) {
           if (x === 0) {
@@ -284,14 +280,15 @@ class Snake extends React.Component {
       }
     }
 
-    if (level === 3) {
-      for (let y = 2; y < 17; y++) {
+    if (level === 3 || level === 4) {
+      for (let y = 4; y < 15; y++) {
         badpool.push([19, y]);
       }
-      for (let x = 2; x < 37; x++) {
+      for (let x = 4; x < 35; x++) {
         badpool.push([x, 9]);
       }
     }
+
     this.setState({
       level: level,
       snakebody: snakebody,
@@ -304,7 +301,7 @@ class Snake extends React.Component {
     const { level } = this.state;
     let blocks = [];
 
-    if (level === 2) {
+    if (level === 2 || level === 4) {
       for (let x = 0; x < 40; x++) {
         for (let y = 0; y < 20; y++) {
           if (x === 0) {
@@ -320,11 +317,11 @@ class Snake extends React.Component {
       }
     }
 
-    if (level === 3) {
-      for (let y = 2; y < 17; y++) {
+    if (level === 3 || level === 4) {
+      for (let y = 4; y < 15; y++) {
         blocks.push(<ObstacleSquare x={19} y={y} />);
       }
-      for (let x = 2; x < 37; x++) {
+      for (let x = 4; x < 35; x++) {
         blocks.push(<ObstacleSquare x={x} y={9} />);
       }
     }
@@ -385,13 +382,10 @@ class GameField extends React.Component {
 
   reset = () => {
     this.setState({ over: false, score: 0, level: 1 });
-    console.log("check");
   };
 
   updateScore = () => {
-    let { score } = this.state;
-    let { level } = this.state;
-    let { highscore } = this.state;
+    let { score, level, highscore } = this.state;
 
     score = score + 1;
 
@@ -401,14 +395,17 @@ class GameField extends React.Component {
 
     this.setState({ score: score, highscore: highscore });
 
-    if (score > 10 && level !== 2) {
+    if (score > 10 && level === 1) {
       level = 2;
-      this.levelUpdate.current.updateLevel();
+      this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
-    }
-    if (score > 15 && level !== 3) {
+    } else if (score > 15 && level === 2) {
       level = 3;
-      this.levelUpdate.current.updateLevel();
+      this.levelUpdate.current.updateLevel(level);
+      this.setState({ level: level });
+    } else if (score > 20 && level === 3) {
+      level = 4;
+      this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
     }
   };
