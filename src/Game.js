@@ -11,7 +11,11 @@ function Square(props) {
   return (
     <span
       className="square border-black"
-      style={{ top: props.y * 25 + "px", left: props.x * 25 + "px" }}
+      style={{
+        top: props.y * 25 + "px",
+        left: props.x * 25 + "px",
+        backgroundColor: props.color,
+      }}
       id={props.id}
     ></span>
   );
@@ -70,11 +74,7 @@ class Snake extends React.Component {
         [31, 8],
         [32, 8],
       ],
-      badpool: [
-        [30, 8],
-        [31, 8],
-        [32, 8],
-      ],
+      badpool: [],
     };
   }
 
@@ -111,8 +111,8 @@ class Snake extends React.Component {
     const { food } = this.state;
 
     if (first[0] === food[0] && first[1] === food[1]) {
-      this.genFood();
       this.props.updateScore();
+      this.genFood();
       return true;
     } else {
       return false;
@@ -131,20 +131,29 @@ class Snake extends React.Component {
       }
     }
 
-    //Checking Field Touch
-    if (level > 1) {
+    // Checking Field Touch for Level 2
+    if (level === 2) {
       if (
         check[0] === 0 ||
         check[1] === 0 ||
         check[0] === 39 ||
         check[1] === 19
       ) {
-        if (level > 2) {
-          if (check[0] === 20 || check[1] === 10) {
-            return true;
-          }
-        }
         return true;
+      }
+    }
+
+    // Checking Field Touch for Level 3
+    if (level === 3) {
+      for (let y = 2; y < 17; y++) {
+        if (check[0] === 19 && check[1] === y) {
+          return true;
+        }
+      }
+      for (let x = 2; x < 37; x++) {
+        if (check[0] === x && check[1] === 9) {
+          return true;
+        }
       }
     }
 
@@ -242,7 +251,7 @@ class Snake extends React.Component {
 
   updateLevel() {
     let { level } = this.state;
-    let { badpool } = this.state;
+    let badpool = [];
     let snakebody = [
       [30, 8],
       [31, 8],
@@ -250,6 +259,14 @@ class Snake extends React.Component {
     ];
 
     level = level + 1;
+
+    if (this.state.direction === "right") {
+      snakebody = [
+        [9, 8],
+        [8, 8],
+        [7, 8],
+      ];
+    }
 
     if (level === 2) {
       for (let x = 0; x < 40; x++) {
@@ -265,37 +282,22 @@ class Snake extends React.Component {
           }
         }
       }
-
-      if (this.state.direction === "right") {
-        snakebody = [
-          [9, 8],
-          [8, 8],
-          [7, 8],
-        ];
-      }
-
-      this.setState({
-        level: level,
-        snakebody: snakebody,
-        size: 3,
-        badpool: badpool,
-      });
     }
 
     if (level === 3) {
-      for (let y = 4; y < 15; y++) {
+      for (let y = 2; y < 17; y++) {
         badpool.push([19, y]);
       }
-      for (let x = 4; x < 35; x++) {
+      for (let x = 2; x < 37; x++) {
         badpool.push([x, 9]);
       }
-      this.setState({
-        level: level,
-        snakebody: snakebody,
-        size: 3,
-        badpool: badpool,
-      });
     }
+    this.setState({
+      level: level,
+      snakebody: snakebody,
+      size: 3,
+      badpool: badpool,
+    });
   }
 
   obstacles() {
@@ -318,11 +320,11 @@ class Snake extends React.Component {
       }
     }
 
-    if (level > 2) {
-      for (let y = 4; y < 15; y++) {
+    if (level === 3) {
+      for (let y = 2; y < 17; y++) {
         blocks.push(<ObstacleSquare x={19} y={y} />);
       }
-      for (let x = 4; x < 35; x++) {
+      for (let x = 2; x < 37; x++) {
         blocks.push(<ObstacleSquare x={x} y={9} />);
       }
     }
@@ -339,12 +341,17 @@ class Snake extends React.Component {
     for (let i = 0; i < size; i++) {
       if (toggle === true) {
         squares.push(
-          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} class="" />
+          <Square
+            x={loc[i][0]}
+            y={loc[i][1]}
+            id={this.props.id}
+            color="white"
+          />
         );
         toggle = false;
       } else {
         squares.push(
-          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} class="" />
+          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} color="gray" />
         );
         toggle = true;
       }
@@ -395,12 +402,12 @@ class GameField extends React.Component {
     this.setState({ score: score, highscore: highscore });
 
     if (score > 10 && level !== 2) {
-      level = level + 1;
+      level = 2;
       this.levelUpdate.current.updateLevel();
       this.setState({ level: level });
     }
     if (score > 15 && level !== 3) {
-      level = level + 1;
+      level = 3;
       this.levelUpdate.current.updateLevel();
       this.setState({ level: level });
     }
