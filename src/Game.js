@@ -57,17 +57,19 @@ class Snake extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: 3,
+      size: 4,
       food: [Math.floor(Math.random() * 40), Math.floor(Math.random() * 20)],
       direction: "left",
       over: false,
       level: 1,
-      init: true,
-      move: true,
+      init: true, // For Reseting snake on level update and change to intial settings
+      move: true, // Working on it
       snakebody: [
-        [30, 8],
-        [31, 8],
-        [32, 8],
+        // Initial Body
+        [30, 5],
+        [31, 5],
+        [32, 5],
+        [33, 5],
       ],
       badpool: [],
     };
@@ -195,10 +197,7 @@ class Snake extends React.Component {
         loc[0][1] = loc[0][1] + 1;
       } else {
       }
-
-      // } else {
       this.setState({ snakebody: loc });
-      // }
     } else {
       this.props.parentCallback();
       document.removeEventListener("keydown", (event) =>
@@ -246,19 +245,6 @@ class Snake extends React.Component {
 
   updateLevel(level) {
     let badpool = [];
-    let snakebody = [
-      [30, 8],
-      [31, 8],
-      [32, 8],
-    ];
-
-    // if (this.state.direction === "right") {
-    //   snakebody = [
-    //     [9, 8],
-    //     [8, 8],
-    //     [7, 8],
-    //   ];
-    // }
 
     if (level === 2 || level === 4) {
       for (let x = 0; x < 40; x++) {
@@ -288,8 +274,13 @@ class Snake extends React.Component {
     clearInterval(global.loop);
     this.setState({
       level: level,
-      snakebody: snakebody,
-      size: 3,
+      snakebody: [
+        [30, 5],
+        [31, 5],
+        [32, 5],
+        [33, 5],
+      ],
+      size: 4,
       badpool: badpool,
       direction: "left",
       init: true,
