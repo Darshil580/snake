@@ -1,9 +1,3 @@
-// import logo from "./logo.svg";
-// import logored from "./logo-red.svg";
-// import logogreen from "./logo-green.svg";
-
-// import Logo from "./Logo.js";
-
 import "./Game.css";
 import React from "react";
 
@@ -65,10 +59,11 @@ class Snake extends React.Component {
     this.state = {
       size: 3,
       food: [Math.floor(Math.random() * 40), Math.floor(Math.random() * 20)],
-      speed: 80,
       direction: "left",
       over: false,
       level: 1,
+      init: true,
+      move: true,
       snakebody: [
         [30, 8],
         [31, 8],
@@ -79,14 +74,15 @@ class Snake extends React.Component {
   }
 
   componentDidMount() {
-    let { speed } = this.state;
     document.addEventListener("keydown", (event) => {
       setTimeout(() => {
         this.handlePress(event);
+        if (this.state.init) {
+          global.loop = setInterval(() => this.moveSnake(), 80);
+          this.setState({ init: false });
+        }
       }, 75);
     });
-
-    global.loop = setInterval(() => this.moveSnake(), speed);
   }
 
   genFood() {
@@ -163,11 +159,11 @@ class Snake extends React.Component {
   moveSnake() {
     const touched = this.touched_food();
     let over = this.over();
-    let { direction, size } = this.state;
+    let { direction, size, init } = this.state;
     let loc = this.state.snakebody;
 
     if (!over) {
-      if (touched) {
+      if (touched && !init) {
         loc.push([loc[size - 1][0], loc[size - 1][1]]);
         this.setState({ size: size + 1, snakebody: loc });
       }
@@ -199,7 +195,10 @@ class Snake extends React.Component {
         loc[0][1] = loc[0][1] + 1;
       } else {
       }
+
+      // } else {
       this.setState({ snakebody: loc });
+      // }
     } else {
       this.props.parentCallback();
       document.removeEventListener("keydown", (event) =>
@@ -217,7 +216,8 @@ class Snake extends React.Component {
       direction !== "left" &&
       direction !== "right"
     ) {
-      this.setState({ direction: "left" });
+      this.setState({ direction: "left", move: false });
+
       // this.moveSnake();
     } else if (
       e.key === "ArrowRight" &&
@@ -225,6 +225,7 @@ class Snake extends React.Component {
       direction !== "left"
     ) {
       this.setState({ direction: "right" });
+
       // this.moveSnake();
     } else if (
       e.key === "ArrowUp" &&
@@ -232,6 +233,7 @@ class Snake extends React.Component {
       direction !== "down"
     ) {
       this.setState({ direction: "up" });
+
       // this.moveSnake();
     } else if (
       e.key === "ArrowDown" &&
@@ -239,13 +241,7 @@ class Snake extends React.Component {
       direction !== "up"
     ) {
       this.setState({ direction: "down" });
-      // this.moveSnake();
     }
-  }
-
-  food() {
-    let { food } = this.state;
-    return <Square x={food[0]} y={food[1]} class="" />;
   }
 
   updateLevel(level) {
@@ -256,13 +252,13 @@ class Snake extends React.Component {
       [32, 8],
     ];
 
-    if (this.state.direction === "right") {
-      snakebody = [
-        [9, 8],
-        [8, 8],
-        [7, 8],
-      ];
-    }
+    // if (this.state.direction === "right") {
+    //   snakebody = [
+    //     [9, 8],
+    //     [8, 8],
+    //     [7, 8],
+    //   ];
+    // }
 
     if (level === 2 || level === 4) {
       for (let x = 0; x < 40; x++) {
@@ -289,12 +285,43 @@ class Snake extends React.Component {
       }
     }
 
+    clearInterval(global.loop);
     this.setState({
       level: level,
       snakebody: snakebody,
       size: 3,
       badpool: badpool,
+      direction: "left",
+      init: true,
     });
+  }
+
+  renderSnake() {
+    let squares = [];
+    let { size } = this.state;
+    let loc = this.state.snakebody;
+    let toggle = true;
+
+    for (let i = 0; i < size; i++) {
+      if (toggle === true) {
+        squares.push(
+          <Square
+            x={loc[i][0]}
+            y={loc[i][1]}
+            id={this.props.id}
+            color="white"
+          />
+        );
+        toggle = false;
+      } else {
+        squares.push(
+          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} color="gray" />
+        );
+        toggle = true;
+      }
+    }
+
+    return squares;
   }
 
   obstacles() {
@@ -329,32 +356,9 @@ class Snake extends React.Component {
     return blocks;
   }
 
-  renderSnake() {
-    let squares = [];
-    let { size } = this.state;
-    let loc = this.state.snakebody;
-    let toggle = true;
-
-    for (let i = 0; i < size; i++) {
-      if (toggle === true) {
-        squares.push(
-          <Square
-            x={loc[i][0]}
-            y={loc[i][1]}
-            id={this.props.id}
-            color="white"
-          />
-        );
-        toggle = false;
-      } else {
-        squares.push(
-          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} color="gray" />
-        );
-        toggle = true;
-      }
-    }
-
-    return squares;
+  food() {
+    let { food } = this.state;
+    return <Square x={food[0]} y={food[1]} class="food" />;
   }
 
   render() {

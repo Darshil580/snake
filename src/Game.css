@@ -59,6 +59,13 @@
   display: inline-block;
   position: relative;
   background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 20px 20px lightslategray;
+  transition: 1s;
+}
+
+.surface:hover {
+  transition: 1s;
+  box-shadow: 1px 1px 10px 10px lightslategray;
 }
 
 .square {
@@ -67,6 +74,10 @@
   display: inline-block;
   position: absolute;
   background-color: rgb(255, 255, 255);
+}
+
+.food {
+  box-shadow: 1px 1px 10px 10px rgb(60, 63, 66);
 }
 
 .border-black {
@@ -106,5 +117,6 @@
 }
 
 #info {
+  color: hue;
   margin-bottom: 30px;
 }

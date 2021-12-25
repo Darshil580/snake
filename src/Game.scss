@@ -1,0 +1,37 @@
+body {
+  min-height: 100vh;
+  background-color: #000;
+  display: grid;
+  color: #fff;
+  place-items: center;
+}
+
+.scene {
+  display: flex;
+}
+
+$width: 21px;
+.panel {
+  position: relative;
+  // border: 1px solid white;
+  width: $width;
+  height: 100px;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: "Hello World";
+  left: var(--left);
+  font-size: 96px;
+  position: absolute;
+  width: max-content;
+  color: hsl(var(--hue), 75%, 75%);
+  transition: 0.2s;
+}
+
+@for $i from 0 to 24 {
+  .panel:nth-child(#{$i + 1}) {
+    --left: #{$width * $i * -1};
+    --hue: #{360/24 * $i};
+  }
+}
