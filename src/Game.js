@@ -5,11 +5,12 @@ import React from "react";
 function Square(props) {
   return (
     <span
-      className="square border-black"
+      className={"square border-black " + props.class}
       style={{
         top: props.y * 25 + "px",
         left: props.x * 25 + "px",
         backgroundColor: props.color,
+        borderRadius: props.borderRadius,
       }}
       id={props.id}
     ></span>
@@ -291,7 +292,13 @@ class Snake extends React.Component {
     for (let i = 0; i < size; i++) {
       if (toggle === 1) {
         squares.push(
-          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} color="gray" />
+          <Square
+            x={loc[i][0]}
+            y={loc[i][1]}
+            id={this.props.id}
+            color="gray"
+            borderRadius="7px"
+          />
         );
         toggle = 2;
       } else if (toggle === 2) {
@@ -311,6 +318,17 @@ class Snake extends React.Component {
             y={loc[i][1]}
             id={this.props.id}
             color="rgba(0,0,0,0.1)"
+            borderRadius="7px"
+          />
+        );
+        toggle = 4;
+      } else {
+        squares.push(
+          <Square
+            x={loc[i][0]}
+            y={loc[i][1]}
+            id={this.props.id}
+            color="rgba(0,0,0,0.5)"
           />
         );
         toggle = 1;
@@ -354,7 +372,15 @@ class Snake extends React.Component {
 
   food() {
     let { food } = this.state;
-    return <Square x={food[0]} y={food[1]} class="food" />;
+    return (
+      <Square
+        x={food[0]}
+        y={food[1]}
+        class="food"
+        color="lightblue"
+        borderRadius="7px"
+      />
+    );
   }
 
   render() {
