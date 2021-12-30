@@ -1,0 +1,277 @@
+.scene {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 100px;
+}
+
+.panel {
+  position: relative;
+  width: 21px;
+  height: 70px;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: " Simple Snake Game. Use Arrow keys to control the Snake.";
+  left: var(--left);
+  font-size: 38px;
+  position: absolute;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  color: hsl(var(--hue), 75%, 75%);
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.panel:nth-child(1) {
+  --left: 0px;
+  --hue: 0;
+}
+
+.panel:nth-child(2) {
+  --left: -21px;
+  --hue: 7.2;
+}
+
+.panel:nth-child(3) {
+  --left: -42px;
+  --hue: 14.4;
+}
+
+.panel:nth-child(4) {
+  --left: -63px;
+  --hue: 21.6;
+}
+
+.panel:nth-child(5) {
+  --left: -84px;
+  --hue: 28.8;
+}
+
+.panel:nth-child(6) {
+  --left: -105px;
+  --hue: 36;
+}
+
+.panel:nth-child(7) {
+  --left: -126px;
+  --hue: 43.2;
+}
+
+.panel:nth-child(8) {
+  --left: -147px;
+  --hue: 50.4;
+}
+
+.panel:nth-child(9) {
+  --left: -168px;
+  --hue: 57.6;
+}
+
+.panel:nth-child(10) {
+  --left: -189px;
+  --hue: 64.8;
+}
+
+.panel:nth-child(11) {
+  --left: -210px;
+  --hue: 72;
+}
+
+.panel:nth-child(12) {
+  --left: -231px;
+  --hue: 79.2;
+}
+
+.panel:nth-child(13) {
+  --left: -252px;
+  --hue: 86.4;
+}
+
+.panel:nth-child(14) {
+  --left: -273px;
+  --hue: 93.6;
+}
+
+.panel:nth-child(15) {
+  --left: -294px;
+  --hue: 100.8;
+}
+
+.panel:nth-child(16) {
+  --left: -315px;
+  --hue: 108;
+}
+
+.panel:nth-child(17) {
+  --left: -336px;
+  --hue: 115.2;
+}
+
+.panel:nth-child(18) {
+  --left: -357px;
+  --hue: 122.4;
+}
+
+.panel:nth-child(19) {
+  --left: -378px;
+  --hue: 129.6;
+}
+
+.panel:nth-child(20) {
+  --left: -399px;
+  --hue: 136.8;
+}
+
+.panel:nth-child(21) {
+  --left: -420px;
+  --hue: 144;
+}
+
+.panel:nth-child(22) {
+  --left: -441px;
+  --hue: 151.2;
+}
+
+.panel:nth-child(23) {
+  --left: -462px;
+  --hue: 158.4;
+}
+
+.panel:nth-child(24) {
+  --left: -483px;
+  --hue: 165.6;
+}
+
+.panel:nth-child(25) {
+  --left: -504px;
+  --hue: 172.8;
+}
+
+.panel:nth-child(26) {
+  --left: -525px;
+  --hue: 180;
+}
+
+.panel:nth-child(27) {
+  --left: -546px;
+  --hue: 187.2;
+}
+
+.panel:nth-child(28) {
+  --left: -567px;
+  --hue: 194.4;
+}
+
+.panel:nth-child(29) {
+  --left: -588px;
+  --hue: 201.6;
+}
+
+.panel:nth-child(30) {
+  --left: -609px;
+  --hue: 208.8;
+}
+
+.panel:nth-child(31) {
+  --left: -630px;
+  --hue: 216;
+}
+
+.panel:nth-child(32) {
+  --left: -651px;
+  --hue: 223.2;
+}
+
+.panel:nth-child(33) {
+  --left: -672px;
+  --hue: 230.4;
+}
+
+.panel:nth-child(34) {
+  --left: -693px;
+  --hue: 237.6;
+}
+
+.panel:nth-child(35) {
+  --left: -714px;
+  --hue: 244.8;
+}
+
+.panel:nth-child(36) {
+  --left: -735px;
+  --hue: 252;
+}
+
+.panel:nth-child(37) {
+  --left: -756px;
+  --hue: 259.2;
+}
+
+.panel:nth-child(38) {
+  --left: -777px;
+  --hue: 266.4;
+}
+
+.panel:nth-child(39) {
+  --left: -798px;
+  --hue: 273.6;
+}
+
+.panel:nth-child(40) {
+  --left: -819px;
+  --hue: 280.8;
+}
+
+.panel:nth-child(41) {
+  --left: -840px;
+  --hue: 288;
+}
+
+.panel:nth-child(42) {
+  --left: -861px;
+  --hue: 295.2;
+}
+
+.panel:nth-child(43) {
+  --left: -882px;
+  --hue: 302.4;
+}
+
+.panel:nth-child(44) {
+  --left: -903px;
+  --hue: 309.6;
+}
+
+.panel:nth-child(45) {
+  --left: -924px;
+  --hue: 316.8;
+}
+
+.panel:nth-child(46) {
+  --left: -945px;
+  --hue: 324;
+}
+
+.panel:nth-child(47) {
+  --left: -966px;
+  --hue: 331.2;
+}
+
+.panel:nth-child(48) {
+  --left: -987px;
+  --hue: 338.4;
+}
+
+.panel:nth-child(49) {
+  --left: -1008px;
+  --hue: 345.6;
+}
+
+.panel:nth-child(50) {
+  --left: -1029px;
+  --hue: 352.8;
+}
+/*# sourceMappingURL=Effect.css.map */

@@ -1,13 +1,14 @@
-body {
-  min-height: 100vh;
-  background-color: #000;
-  display: grid;
-  color: #fff;
-  place-items: center;
-}
+// body {
+//   min-height: 100vh;
+//   background-color: #000;
+//   display: grid;
+//   color: #fff;
+//   place-items: center;
+// }
 
 .scene {
   display: flex;
+  margin-left: 100px;
 }
 
 $width: 21px;
@@ -15,23 +16,23 @@ $width: 21px;
   position: relative;
   // border: 1px solid white;
   width: $width;
-  height: 100px;
+  height: 70px;
   overflow: hidden;
 }
 
 .panel::before {
-  content: "Hello World";
+  content: " Simple Snake Game. Use Arrow keys to control the Snake.";
   left: var(--left);
-  font-size: 96px;
+  font-size: 38px;
   position: absolute;
   width: max-content;
   color: hsl(var(--hue), 75%, 75%);
   transition: 0.2s;
 }
 
-@for $i from 0 to 24 {
+@for $i from 0 to 50 {
   .panel:nth-child(#{$i + 1}) {
     --left: #{$width * $i * -1};
-    --hue: #{360/24 * $i};
+    --hue: #{360/50 * $i};
   }
 }

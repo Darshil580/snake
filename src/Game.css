@@ -30,7 +30,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #4797b1;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -55,17 +55,17 @@
 .surface {
   height: 500px;
   width: 1000px;
-  margin: 0px 100px 0px 100px;
+  margin: 20px 100px 0px 100px;
   display: inline-block;
   position: relative;
-  background-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 2px 2px 20px 20px lightslategray;
+  background-color: #f7f3ce;
+
   transition: 1s;
 }
 
 .surface:hover {
   transition: 1s;
-  box-shadow: 1px 1px 10px 10px lightslategray;
+  box-shadow: 2px 2px 20px 20px lightslategray;
 }
 
 .square {
@@ -117,6 +117,5 @@
 }
 
 #info {
-  color: hue;
   margin-bottom: 30px;
 }

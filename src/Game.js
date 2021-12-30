@@ -1,4 +1,5 @@
 import "./Game.css";
+import "./Effect.css";
 import React from "react";
 
 function Square(props) {
@@ -77,13 +78,11 @@ class Snake extends React.Component {
 
   componentDidMount() {
     document.addEventListener("keydown", (event) => {
-      setTimeout(() => {
-        this.handlePress(event);
-        if (this.state.init) {
-          global.loop = setInterval(() => this.moveSnake(), 80);
-          this.setState({ init: false });
-        }
-      }, 75);
+      this.handlePress(event);
+      if (this.state.init) {
+        global.loop = setInterval(() => this.moveSnake(), 80);
+        this.setState({ init: false });
+      }
     });
   }
 
@@ -161,7 +160,7 @@ class Snake extends React.Component {
   moveSnake() {
     const touched = this.touched_food();
     let over = this.over();
-    let { direction, size, init } = this.state;
+    let { size, init } = this.state;
     let loc = this.state.snakebody;
 
     if (!over) {
@@ -175,22 +174,22 @@ class Snake extends React.Component {
         loc[i][1] = loc[i - 1][1];
       }
 
-      if (direction === "left") {
+      if (this.state.direction === "left") {
         if (loc[0][0] === 0) {
           loc[0][0] = 40;
         }
         loc[0][0] = loc[0][0] - 1;
-      } else if (direction === "right") {
+      } else if (this.state.direction === "right") {
         if (loc[0][0] === 39) {
           loc[0][0] = -1;
         }
         loc[0][0] = loc[0][0] + 1;
-      } else if (direction === "up") {
+      } else if (this.state.direction === "up") {
         if (loc[0][1] === 0) {
           loc[0][1] = 20;
         }
         loc[0][1] = loc[0][1] - 1;
-      } else if (direction === "down") {
+      } else if (this.state.direction === "down") {
         if (loc[0][1] === 19) {
           loc[0][1] = -1;
         }
@@ -224,16 +223,12 @@ class Snake extends React.Component {
       direction !== "left"
     ) {
       this.setState({ direction: "right" });
-
-      // this.moveSnake();
     } else if (
       e.key === "ArrowUp" &&
       direction !== "up" &&
       direction !== "down"
     ) {
       this.setState({ direction: "up" });
-
-      // this.moveSnake();
     } else if (
       e.key === "ArrowDown" &&
       direction !== "down" &&
@@ -291,24 +286,34 @@ class Snake extends React.Component {
     let squares = [];
     let { size } = this.state;
     let loc = this.state.snakebody;
-    let toggle = true;
+    let toggle = 1;
 
     for (let i = 0; i < size; i++) {
-      if (toggle === true) {
+      if (toggle === 1) {
+        squares.push(
+          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} color="gray" />
+        );
+        toggle = 2;
+      } else if (toggle === 2) {
         squares.push(
           <Square
             x={loc[i][0]}
             y={loc[i][1]}
             id={this.props.id}
-            color="white"
+            color="black"
           />
         );
-        toggle = false;
-      } else {
+        toggle = 3;
+      } else if (toggle === 3) {
         squares.push(
-          <Square x={loc[i][0]} y={loc[i][1]} id={this.props.id} color="gray" />
+          <Square
+            x={loc[i][0]}
+            y={loc[i][1]}
+            id={this.props.id}
+            color="rgba(0,0,0,0.1)"
+          />
         );
-        toggle = true;
+        toggle = 1;
       }
     }
 
@@ -372,7 +377,7 @@ class GameField extends React.Component {
       level: 1,
       highscore: 0,
     };
-    this.levelUpdate = React.createRef();
+    this.levelUpdate = React.createRef(); // to call the child method from parent method
   }
 
   reset = () => {
@@ -415,9 +420,58 @@ class GameField extends React.Component {
     if (!over) {
       return (
         <div>
-          <h1 id="info">
-            Simple Snake Game. Use Arrow keys to control the Snake.
-          </h1>
+          <div class="scene" id="info">
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+            <div class="panel"></div>
+          </div>
           <div id="details">
             {/* <div className="row"> */}
             <Display name="Score" value={score} class="data" />
