@@ -61,7 +61,7 @@
   position: relative;
   background-color: #f7f3ce;
   box-shadow: 1px 1px 10px 10px lemonchiffon;
-  animation: rotate-surface 2s infinite ease-in-out alternate;
+  animation: rotate-surface 3s infinite ease-in-out alternate;
   transition: 1s;
   transform-style: preserve-3d;
 }
@@ -75,17 +75,16 @@
   margin: 20px 100px 0px 100px;
   width: 800px;
   height: 100px;
-  transform: perspective(1em) rotateX(40deg) scale(1, 0.25);
-  filter: blur(2em);
+  perspective: 500px;
 }
 
 @keyframes rotate-surface {
   0% {
-    transform: rotateZ(2deg) rotateY(-5deg);
+    transform: rotateX(-10deg) rotateY(-10deg) rotateZ(-2deg);
   }
 
   100% {
-    transform: rotateZ(-2deg) rotateY(-5deg);
+    transform: rotateX(10deg) rotateY(10deg) rotateZ(2deg);
   }
 }
 
