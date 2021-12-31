@@ -468,19 +468,19 @@ class GameField extends React.Component {
 
     this.setState({ score: score, highscore: highscore });
 
-    if (score > 10 && level === 1) {
+    if (score > 5 && level === 1) {
       let LevelChangeAudio = new Audio(levelchangeBeat);
       LevelChangeAudio.play();
       level = 2;
       this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
-    } else if (score > 15 && level === 2) {
+    } else if (score > 10 && level === 2) {
       let LevelChangeAudio = new Audio(levelchangeBeat);
       LevelChangeAudio.play();
       level = 3;
       this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
-    } else if (score > 20 && level === 3) {
+    } else if (score > 15 && level === 3) {
       let LevelChangeAudio = new Audio(levelchangeBeat);
       LevelChangeAudio.play();
       level = 4;
