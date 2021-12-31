@@ -1,6 +1,8 @@
-# Snake Game
+# Snake
 
-## Instruction:
+#### Video Demo: https://www.youtube.com/watch?v=EzawyAR4sxk
+
+#### Description:
 
 It is a simple game where snake will be controlled by users using the arrow keys.
 
