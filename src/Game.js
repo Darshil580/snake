@@ -11,6 +11,8 @@ function Square(props) {
         left: props.x * 25 + "px",
         backgroundColor: props.color,
         borderRadius: props.borderRadius,
+        border: "1px solid lightcoral",
+        boxShadow: props.boxShadow,
       }}
       id={props.id}
     ></span>
@@ -21,7 +23,12 @@ function ObstacleSquare(props) {
   return (
     <span
       className="square"
-      style={{ top: props.y * 25 + "px", left: props.x * 25 + "px" }}
+      style={{
+        top: props.y * 25 + "px",
+        left: props.x * 25 + "px",
+        backgroundColor: "white",
+        boxShadow: "1px 1px 5px 1px",
+      }}
       id={props.id}
     ></span>
   );
@@ -215,7 +222,7 @@ class Snake extends React.Component {
       direction !== "left" &&
       direction !== "right"
     ) {
-      this.setState({ direction: "left", move: false });
+      this.setState({ direction: "left" });
 
       // this.moveSnake();
     } else if (
@@ -284,20 +291,32 @@ class Snake extends React.Component {
   }
 
   renderSnake() {
+    let head = true;
     let squares = [];
     let { size } = this.state;
     let loc = this.state.snakebody;
     let toggle = 1;
 
     for (let i = 0; i < size; i++) {
-      if (toggle === 1) {
+      if (toggle === 1 && head === true) {
+        head = false;
         squares.push(
           <Square
             x={loc[i][0]}
             y={loc[i][1]}
             id={this.props.id}
-            color="gray"
-            borderRadius="7px"
+            color="#ffc4d0"
+            boxShadow="0px 0px 25px 5px lightcoral"
+          />
+        );
+        toggle = 2;
+      } else if (toggle === 1) {
+        squares.push(
+          <Square
+            x={loc[i][0]}
+            y={loc[i][1]}
+            id={this.props.id}
+            color="#ffc4d0"
           />
         );
         toggle = 2;
@@ -307,7 +326,7 @@ class Snake extends React.Component {
             x={loc[i][0]}
             y={loc[i][1]}
             id={this.props.id}
-            color="black"
+            color="#f7ddde"
           />
         );
         toggle = 3;
@@ -317,8 +336,8 @@ class Snake extends React.Component {
             x={loc[i][0]}
             y={loc[i][1]}
             id={this.props.id}
-            color="rgba(0,0,0,0.1)"
-            borderRadius="7px"
+            color="#fbe8e7"
+            // borderRadius="7px"
           />
         );
         toggle = 4;
@@ -328,7 +347,7 @@ class Snake extends React.Component {
             x={loc[i][0]}
             y={loc[i][1]}
             id={this.props.id}
-            color="rgba(0,0,0,0.5)"
+            color="#fcf5ee"
           />
         );
         toggle = 1;
@@ -374,11 +393,12 @@ class Snake extends React.Component {
     let { food } = this.state;
     return (
       <Square
+        id="food"
         x={food[0]}
         y={food[1]}
         class="food"
-        color="lightblue"
-        borderRadius="7px"
+        color="lightcoral"
+        borderRadius="7px white"
       />
     );
   }
@@ -445,7 +465,7 @@ class GameField extends React.Component {
 
     if (!over) {
       return (
-        <div>
+        <div class="game">
           <div class="scene" id="info">
             <div class="panel"></div>
             <div class="panel"></div>

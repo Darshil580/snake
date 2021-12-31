@@ -1,14 +1,11 @@
-// body {
-//   min-height: 100vh;
-//   background-color: #000;
-//   display: grid;
-//   color: #fff;
-//   place-items: center;
-// }
+body {
+}
 
 .scene {
   display: flex;
   margin-left: 100px;
+  perspective: 500px;
+  // perspective-origin: 50% calc(50% -150px);
 }
 
 $width: 21px;
@@ -18,7 +15,23 @@ $width: 21px;
   width: $width;
   height: 70px;
   overflow: hidden;
+  animation: rotate 6s var(--delay) infinite ease-in-out alternate;
 }
+
+@keyframes rotate {
+  0%,
+  10% {
+    transform: rotateX(0deg);
+  }
+  70%,
+  100% {
+    transform: rotateX(720deg);
+  }
+}
+
+// .panel:hover {
+//   transform: ;
+// }
 
 .panel::before {
   content: " Simple Snake Game. Use Arrow keys to control the Snake.";
@@ -34,5 +47,6 @@ $width: 21px;
   .panel:nth-child(#{$i + 1}) {
     --left: #{$width * $i * -1};
     --hue: #{360/50 * $i};
+    --delay: #{$i * 0.05s};
   }
 }

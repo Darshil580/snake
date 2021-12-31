@@ -55,13 +55,38 @@
 .surface {
   height: 500px;
   width: 1000px;
+  /* perspective: 500px; */
   margin: 20px 100px 0px 100px;
   display: inline-block;
   position: relative;
   background-color: #f7f3ce;
   box-shadow: 1px 1px 10px 10px lemonchiffon;
-
+  animation: rotate-surface 2s infinite ease-in-out alternate;
   transition: 1s;
+  transform-style: preserve-3d;
+}
+
+.surface::before {
+  content: "";
+  position: absolute;
+  background-color: #f7f3ce;
+  top: 0;
+  left: 0;
+  margin: 20px 100px 0px 100px;
+  width: 800px;
+  height: 100px;
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.25);
+  filter: blur(2em);
+}
+
+@keyframes rotate-surface {
+  0% {
+    transform: rotateZ(2deg) rotateY(-5deg);
+  }
+
+  100% {
+    transform: rotateZ(-2deg) rotateY(-5deg);
+  }
 }
 
 .surface:hover {
@@ -78,7 +103,7 @@
 }
 
 .food {
-  box-shadow: 1px 1px 1px 1px black;
+  box-shadow: 0px 0px 25px 5px lightcoral;
 }
 
 .border-black {
@@ -120,4 +145,8 @@
 
 #info {
   margin-bottom: 30px;
+}
+
+.game {
+  /* background-color: white; */
 }
