@@ -1,3 +1,30 @@
+# Snake Game
+
+## Instruction:
+
+It is a simple game where snake will be controlled by users using the arrow keys.
+User will take snake towards the food.
+As the Snake will eat the food, it will grow accordingly.
+Game will be over, if snake touches it self or any obstacles on it’s way.
+The Level of the Game Area where snake is running around will change according to score.
+
+## Structure of Project
+
+Title Screen with Text at the center
+
+### Snake Game :
+
+Level 1
+Level 2
+Level 3
+Level 4
+
+### Snake Game Objects:
+
+Snake
+Food
+Obstacle Area
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
