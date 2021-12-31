@@ -1,5 +1,10 @@
 import "./Game.css";
 import "./Effect.css";
+import eating from "./sounds/eating.wav";
+import lost from "./sounds/lost.wav";
+import highscoreBeat from "./sounds/highscoreBeat.wav";
+import levelchangeBeat from "./sounds/levelchange.wav";
+// import backSound from "./sounds/background.mp3";
 import React from "react";
 
 function Square(props) {
@@ -62,7 +67,6 @@ function Restart(props) {
 
 class Snake extends React.Component {
   static loop;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -114,8 +118,10 @@ class Snake extends React.Component {
   touched_food() {
     const first = this.state.snakebody[0];
     const { food } = this.state;
+    let audio = new Audio(eating);
 
     if (first[0] === food[0] && first[1] === food[1]) {
+      audio.play();
       this.props.updateScore();
       this.genFood();
       return true;
@@ -128,10 +134,11 @@ class Snake extends React.Component {
     let snake = this.state.snakebody;
     let check = snake[0];
     const { level } = this.state;
-
     // Checking Body Touch
     for (let i = 1; i < snake.length; i++) {
       if (snake[i][0] === check[0] && snake[i][1] === check[1]) {
+        let audio = new Audio(lost);
+        audio.play();
         return true;
       }
     }
@@ -144,6 +151,9 @@ class Snake extends React.Component {
         check[0] === 39 ||
         check[1] === 19
       ) {
+        let audio = new Audio(lost);
+
+        audio.play();
         return true;
       }
     }
@@ -152,11 +162,16 @@ class Snake extends React.Component {
     if (level === 3 || level === 4) {
       for (let y = 4; y < 15; y++) {
         if (check[0] === 19 && check[1] === y) {
+          let audio = new Audio(lost);
+          audio.play();
           return true;
         }
       }
       for (let x = 4; x < 35; x++) {
         if (check[0] === x && check[1] === 9) {
+          let audio = new Audio(lost);
+
+          audio.play();
           return true;
         }
       }
@@ -307,6 +322,7 @@ class Snake extends React.Component {
             id={this.props.id}
             color="#ffc4d0"
             boxShadow="0px 0px 25px 5px lightcoral"
+            key={i}
           />
         );
         toggle = 2;
@@ -317,6 +333,7 @@ class Snake extends React.Component {
             y={loc[i][1]}
             id={this.props.id}
             color="#ffc4d0"
+            key={i}
           />
         );
         toggle = 2;
@@ -327,6 +344,7 @@ class Snake extends React.Component {
             y={loc[i][1]}
             id={this.props.id}
             color="#f7ddde"
+            key={i}
           />
         );
         toggle = 3;
@@ -337,6 +355,7 @@ class Snake extends React.Component {
             y={loc[i][1]}
             id={this.props.id}
             color="#fbe8e7"
+            key={i}
             // borderRadius="7px"
           />
         );
@@ -348,6 +367,7 @@ class Snake extends React.Component {
             y={loc[i][1]}
             id={this.props.id}
             color="#fcf5ee"
+            key={i}
           />
         );
         toggle = 1;
@@ -422,12 +442,13 @@ class GameField extends React.Component {
       score: 0,
       level: 1,
       highscore: 0,
+      beatsound: true,
     };
     this.levelUpdate = React.createRef(); // to call the child method from parent method
   }
 
   reset = () => {
-    this.setState({ over: false, score: 0, level: 1 });
+    this.setState({ over: false, score: 0, level: 1, beatsound: true });
   };
 
   updateScore = () => {
@@ -437,19 +458,31 @@ class GameField extends React.Component {
 
     if (score > highscore) {
       highscore = highscore + 1;
+      if (this.state.beatsound === true) {
+        let audio = new Audio(highscoreBeat);
+        console.log("asd");
+        this.setState({ beatsound: false });
+        audio.play();
+      }
     }
 
     this.setState({ score: score, highscore: highscore });
 
     if (score > 10 && level === 1) {
+      let LevelChangeAudio = new Audio(levelchangeBeat);
+      LevelChangeAudio.play();
       level = 2;
       this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
     } else if (score > 15 && level === 2) {
+      let LevelChangeAudio = new Audio(levelchangeBeat);
+      LevelChangeAudio.play();
       level = 3;
       this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
     } else if (score > 20 && level === 3) {
+      let LevelChangeAudio = new Audio(levelchangeBeat);
+      LevelChangeAudio.play();
       level = 4;
       this.levelUpdate.current.updateLevel(level);
       this.setState({ level: level });
@@ -465,58 +498,58 @@ class GameField extends React.Component {
 
     if (!over) {
       return (
-        <div class="game">
-          <div class="scene" id="info">
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
+        <div className="game">
+          <div className="scene" id="info">
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
+            <div className="panel"></div>
           </div>
           <div id="details">
             {/* <div className="row"> */}
@@ -547,14 +580,35 @@ class GameField extends React.Component {
 }
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bool: true,
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ bool: false });
+    }, 3000);
+  }
+
   render() {
-    return (
-      <div className="App">
-        <div className="App-header ">
-          <GameField />
+    if (this.state.bool === true) {
+      return (
+        <div className="CS50">
+          <h1 className="typing">This is CS50 Final Project Snake !</h1>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="App">
+          <div className="App-header ">
+            <GameField />
+          </div>
+        </div>
+      );
+    }
   }
 }
 

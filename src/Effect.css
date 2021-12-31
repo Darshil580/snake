@@ -4,7 +4,7 @@
   display: flex;
   margin-left: 100px;
   -webkit-perspective: 500px;
-  perspective: 500px;
+          perspective: 500px;
 }
 
 .panel {
@@ -13,19 +13,19 @@
   height: 70px;
   overflow: hidden;
   -webkit-animation: rotate 6s var(--delay) infinite ease-in-out alternate;
-  animation: rotate 6s var(--delay) infinite ease-in-out alternate;
+          animation: rotate 6s var(--delay) infinite ease-in-out alternate;
 }
 
 @-webkit-keyframes rotate {
   0%,
   10% {
     -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
+            transform: rotateX(0deg);
   }
   70%,
   100% {
     -webkit-transform: rotateX(720deg);
-    transform: rotateX(720deg);
+            transform: rotateX(720deg);
   }
 }
 
@@ -33,12 +33,12 @@
   0%,
   10% {
     -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
+            transform: rotateX(0deg);
   }
   70%,
   100% {
     -webkit-transform: rotateX(720deg);
-    transform: rotateX(720deg);
+            transform: rotateX(720deg);
   }
 }
 
@@ -353,5 +353,63 @@
   --left: -1029px;
   --hue: 352.8;
   --delay: 2.45s;
+}
+
+.CS50 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
+  background: #000;
+}
+
+h1 {
+  font-size: 4em;
+  color: #fff;
+}
+
+.typing {
+  position: relative;
+}
+
+.typing::after {
+  content: "|";
+  position: absolute;
+  right: 0;
+  width: 100%;
+  color: white;
+  background: #000;
+  -webkit-animation: typing 1s steps(19) forwards, caret 2s infinite;
+          animation: typing 1s steps(19) forwards, caret 2s infinite;
+}
+
+@-webkit-keyframes typing {
+  to {
+    width: 0;
+  }
+}
+
+@keyframes typing {
+  to {
+    width: 0;
+  }
+}
+
+@-webkit-keyframes caret {
+  50% {
+    color: transparent;
+  }
+}
+
+@keyframes caret {
+  50% {
+    color: transparent;
+  }
 }
 /*# sourceMappingURL=Effect.css.map */

@@ -50,3 +50,49 @@ $width: 21px;
     --delay: #{$i * 0.05s};
   }
 }
+
+$bg: #000;
+$text-color: #fff;
+$caret-color: white;
+$text-length: 19;
+$animation-time: 1s;
+
+// Center content
+.CS50 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: $bg;
+}
+// Basic style
+h1 {
+  font-size: 4em;
+  color: $text-color;
+}
+
+// Typing style
+.typing {
+  position: relative;
+  &::after {
+    content: "|";
+    position: absolute;
+    right: 0;
+    width: 100%;
+    color: $caret-color;
+    background: $bg;
+    animation: typing $animation-time steps($text-length) forwards,
+      caret 2s infinite;
+  }
+}
+// Animation
+@keyframes typing {
+  to {
+    width: 0;
+  }
+}
+@keyframes caret {
+  50% {
+    color: transparent;
+  }
+}
