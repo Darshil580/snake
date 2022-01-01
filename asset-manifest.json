@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/snake/static/css/main.06e19eec.chunk.css",
+    "main.js": "/snake/static/js/main.2141ba35.chunk.js",
+    "main.js.map": "/snake/static/js/main.2141ba35.chunk.js.map",
+    "runtime-main.js": "/snake/static/js/runtime-main.c772add5.js",
+    "runtime-main.js.map": "/snake/static/js/runtime-main.c772add5.js.map",
+    "static/js/2.fc1a81fe.chunk.js": "/snake/static/js/2.fc1a81fe.chunk.js",
+    "static/js/2.fc1a81fe.chunk.js.map": "/snake/static/js/2.fc1a81fe.chunk.js.map",
+    "index.html": "/snake/index.html",
+    "static/css/main.06e19eec.chunk.css.map": "/snake/static/css/main.06e19eec.chunk.css.map",
+    "static/js/2.fc1a81fe.chunk.js.LICENSE.txt": "/snake/static/js/2.fc1a81fe.chunk.js.LICENSE.txt",
+    "static/media/eating.wav": "/snake/static/media/eating.80f01a1b.wav",
+    "static/media/highscoreBeat.wav": "/snake/static/media/highscoreBeat.a9c7545d.wav",
+    "static/media/levelchange.wav": "/snake/static/media/levelchange.05ba2c65.wav",
+    "static/media/lost.wav": "/snake/static/media/lost.7ebf8a8f.wav"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c772add5.js",
+    "static/js/2.fc1a81fe.chunk.js",
+    "static/css/main.06e19eec.chunk.css",
+    "static/js/main.2141ba35.chunk.js"
+  ]
+}
